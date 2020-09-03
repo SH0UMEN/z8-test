@@ -93,6 +93,8 @@ public class Documents extends Document {
 	[ui "org.zenframework.z8.template.controls.YoutubeField"] youtube;
 	youtube.colSpan = 1;
 	
+	[ui "org.zenframework.z8.template.controls.MusicField"] doc;
+	
 	[displayName "Основное"]
 	private Tab mainTab;
 	mainTab.controls = { createdAt, name, doc, status.name, user.name, email, xml };

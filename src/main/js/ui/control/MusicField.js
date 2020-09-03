@@ -1,15 +1,45 @@
 Z8.define('org.zenframework.z8.template.controls.MusicField', {
     // Имя наследуемого класса
-    extend: 'Z8.form.field.Text',
+    extend: 'Z8.form.field.File',
+    playing: false,
+    supportedFormats: ["mp3", "ogg", "wav"],
 
     htmlMarkup() {
-        let markup = Z8.form.field.Text.prototype.htmlMarkup.call(this);
-        markup.cls += " youtube";
-        markup.cn[1].cn.push({
-            tag: "div",
-            cls: "music__wrapper"
-        });
+        let triggers = this.triggers;
+        triggers.push({ icon: 'fa-play', tooltip: 'Прослушать', handler: this.play, scope: this });
+        let markup = Z8.form.field.File.prototype.htmlMarkup.call(this);
+
+        let player = {
+            tag: "audio",
+            cls: "audio__player"
+        };
+
+        markup.cn.push(player);
         return markup;
+    },
+
+    play() {
+        if(this.isValid()) {
+            let player = document.querySelector(`#${this.getId()} .audio__player`),
+                trigger = this.getPlayTrigger();
+
+            if(!this.playing) {
+                player.play().then(()=>{
+                    this.playing = true;
+                    trigger.icon.classList.remove("fa-play");
+                    trigger.icon.classList.add("fa-pause");
+                });
+            } else {
+                player.pause();
+                this.playing = false;
+                trigger.icon.classList.add("fa-play");
+                trigger.icon.classList.remove("fa-pause");
+            }
+        }
+    },
+
+    getPlayTrigger() {
+        return this.triggers[0];
     },
 
     // completeRender() {
@@ -30,40 +60,36 @@ Z8.define('org.zenframework.z8.template.controls.MusicField', {
     // },
     //
     setValue(value, displayValue) {
-        let playerWrapper = document.querySelector("#" + this.getId() + " .youtube__wrapper");
         //Вставка плеера
         Z8.form.field.Text.prototype.setValue.call(this, value, displayValue);
-        if(this.isValid() && this.input && (this.prevValue != value || playerWrapper.innerHTML == "")) {
-            let url = new URL(value),
-                player = `<iframe height="315" src="https://www.youtube.com/embed/${ url.searchParams.get('v') }" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-            playerWrapper.innerHTML = player;
-        } else if(!this.isValid()) {
-            playerWrapper.innerHTML = "";
+
+        let player = document.querySelector(`#${this.getId()} .audio__player`);
+
+        if(player) {
+            if(this.isValid()) {
+                // Установка источника
+                player.src = encodeURI((window._DEBUG_ ? '/' : '') + value[0].path.replace(/\\/g, '/')) + '?&session=' + Application.session +
+                    (value[0].id != null ? '&id=' + value[0].id : '');
+            } else {
+                // Если значение поменялось на невалидное
+                this.playing = false;
+                trigger.icon.classList.add("fa-play");
+                trigger.icon.classList.remove("fa-pause");
+                player.src = "";
+            }
         }
-
-        this.prevValue = value;
-    },
-
-    onInput(e, target) {
-        this.prevValue = target.title;
-        Z8.form.field.Text.prototype.onInput.call(this, e, target);
     },
 
     validate() {
-        let value = this.getValue(),
-            res = false,
-            url;
+        let res = false;
+        let value = this.getValue();
 
-        try {
-            url = new URL(value);
-        } catch(e) {
-            res = false;
-            this.setValid(res);
-            return;
-        }
+        if (value) {
+            value = value[0].name.split(".");
 
-        if(url.hostname == "youtube.com" || url.hostname == "www.youtube.com") {
-            res = true;
+            if(this.supportedFormats.includes(value[value.length-1].toLowerCase())) {
+                res = true;
+            }
         }
 
         this.setValid(res);
