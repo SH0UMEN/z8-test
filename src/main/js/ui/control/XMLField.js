@@ -21,7 +21,7 @@ Z8.define('org.zenframework.z8.template.controls.XMLField', {
         Z8.form.field.TextArea.prototype.setValue.call(this, value, displayValue);
 
         if(this.cmInstance) {
-            this.cmInstance.setValue(value);
+            this.cmInstance.setValue(value || "");
         }
     }
 });

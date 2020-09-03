@@ -7,7 +7,7 @@ Z8.define('org.zenframework.z8.template.controls.MusicField', {
         markup.cls += " youtube";
         markup.cn[1].cn.push({
             tag: "div",
-            cls: "youtube__wrapper"
+            cls: "music__wrapper"
         });
         return markup;
     },
