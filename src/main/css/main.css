@@ -27,3 +27,17 @@
     width: 0;
     height: 0;
 }
+
+/* Стили для YoutubeField */
+.youtube .box {
+    display: block;
+}
+
+.youtube input {
+    width: 100%;
+}
+
+.youtube__wrapper iframe {
+    width: 100%;
+    margin-top: 5px;
+}

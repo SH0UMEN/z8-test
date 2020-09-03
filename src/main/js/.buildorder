@@ -5,3 +5,4 @@ libs/codemirror.js
 libs/xml/xml.js
 ui/control/EMail.js
 ui/control/XMLField.js
+ui/control/YoutubeField.js

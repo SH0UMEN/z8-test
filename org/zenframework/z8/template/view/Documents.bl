@@ -3,6 +3,8 @@ import org.zenframework.z8.base.form.action.Action;
 import org.zenframework.z8.base.query.Query;
 import org.zenframework.z8.template.model.Document;
 import org.zenframework.z8.template.model.History;
+import org.zenframework.z8.base.form.Tab;
+import org.zenframework.z8.base.form.TabControl;
 
 /* Атрибут [entry] указывает, что данное представление является пунктом меню приложения */
 [entry]
@@ -88,12 +90,30 @@ public class Documents extends Document {
 	xml.colSpan = 4;
 	xml.flex = 1;
 	
+	[ui "org.zenframework.z8.template.controls.YoutubeField"] youtube;
+	youtube.colSpan = 1;
+	
+	[displayName "Основное"]
+	private Tab mainTab;
+	mainTab.controls = { createdAt, name, doc, status.name, user.name, email, xml };
+	mainTab.colCount = 4;
+	
+	[displayName "Медиа"]
+	private Tab mediaTab;
+	mediaTab.controls = { youtube };
+	mediaTab.colCount = 2;
+	
+	private TabControl tabs;
+	tabs.tabs = { mainTab, mediaTab };
+	tabs.colSpan = 4;
+	tabs.flex = 1;
+	
 	/* Массив names определяет перечень полей, отображаемых в левом списке в режиме формы */
 	names = { createdAt, fullName };
-	/* Массив controls определяет перечень визуальных элементов, отображаемых в правой части формы */
-	controls = { createdAt, name, doc, status.name, user.name, email, xml, historyList };
 	/* Массив columns определяет перечень полей, отображаемых в режиме таблицы */
 	columns = { createdAt, name, doc, status.name, user.name };
+
+	controls = { tabs };
 
 	/* Массив действий, доступных в визуальном интерфейсе */
 	actions = { clearHistory };

@@ -50,12 +50,13 @@ public class Document extends Table {
 	[displayName "XML"]
 	public TextField xml;
 	
-	/* Объявление поля с youtube-плеером
+	/* Объявление поля с youtube-плеером */
 	[name "youtube"]
 	[displayName "Ссылка youtube"]
 	public StringField youtube;
+	youtube.length = 70;
 	
-	Объявление поля с youtube-плеером
+	/*Объявление поля с youtube-плеером
 	[name "music"]
 	[displayName "Приложенный аудио-файл"]
 	public StringField music;*/

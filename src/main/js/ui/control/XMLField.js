@@ -7,15 +7,12 @@ Z8.define('org.zenframework.z8.template.controls.XMLField', {
         Z8.form.field.TextArea.prototype.completeRender.call(this);
 
         let codeEditor = document.querySelector(`[name=${this.getId()}]`);
-
         // Создание редактора
         this.cmInstance = CodeMirror.fromTextArea(codeEditor, {
-            lineNumbers: true,
             mode: "text/html",
         });
 
         this.cmInstance.on("change", (ins) => {
-            console.log(ins.getValue());
             Z8.form.field.TextArea.prototype.setValue.call(this, ins.getValue(), "");
         });
     },
