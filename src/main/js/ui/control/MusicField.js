@@ -42,26 +42,9 @@ Z8.define('org.zenframework.z8.template.controls.MusicField', {
         return this.triggers[0];
     },
 
-    // completeRender() {
-    //     Z8.form.field.TextArea.prototype.completeRender.call(this);
-    //
-    //     let codeEditor = document.querySelector(`[name=${this.getId()}]`);
-    //
-    //     // Создание редактора
-    //     this.cmInstance = CodeMirror.fromTextArea(codeEditor, {
-    //         lineNumbers: true,
-    //         mode: "text/html",
-    //     });
-    //
-    //     this.cmInstance.on("change", (ins) => {
-    //         console.log(ins.getValue());
-    //         Z8.form.field.TextArea.prototype.setValue.call(this, ins.getValue(), "");
-    //     });
-    // },
-    //
     setValue(value, displayValue) {
         //Вставка плеера
-        Z8.form.field.Text.prototype.setValue.call(this, value, displayValue);
+        Z8.form.field.File.prototype.setValue.call(this, value, displayValue);
 
         let player = document.querySelector(`#${this.getId()} .audio__player`);
 
@@ -84,7 +67,8 @@ Z8.define('org.zenframework.z8.template.controls.MusicField', {
         let res = false;
         let value = this.getValue();
 
-        if (value) {
+        // Проверка на наличие значения
+        if (value && value[0]) {
             value = value[0].name.split(".");
 
             if(this.supportedFormats.includes(value[value.length-1].toLowerCase())) {
