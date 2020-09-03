@@ -1,5 +1,7 @@
 application/Application.js
 application/User.js
 application/Viewport.js
-
+libs/codemirror.js
+libs/xml/xml.js
 ui/control/EMail.js
+ui/control/XMLField.js
